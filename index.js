@@ -1,16 +1,26 @@
-import express from 'express'
-import { connectDb } from './src/config/mysqlConnection.js'
-import { exerciseRoutes } from './src/v1/routes/exerciseRoutes.js'
+import express from 'express';
 
-process.loadEnvFile()
-const PORT = process.env.PORT || 3000
+import usersRoutes from './src/v1/routes/usersRoutes.js';
 
-const app = express()
-app.use(express.json())
+import sequelize from './src/database/db/mysqlConnection.js';
 
-app.use('/api/v1/exercises', exerciseRoutes)
+process.loadEnvFile();
+const PORT = process.env.PORT || 3000;
+
+const app = express();
+app.use(express.json());
+
+app.use('/api/v1', usersRoutes);
+
+sequelize
+  .sync({ force: true })
+  .then(() => {
+    console.log('Conexión a la base de datos exitosa');
+  })
+  .catch((err) => {
+    console.error('No se pudo conectar a la base de datos:', err);
+  });
 
 app.listen(PORT, () => {
-  connectDb()
-  console.log(`Server listening on http://localhost:${PORT}`)
-})
+  console.log(`Server listening on http://localhost:${PORT}`);
+});
