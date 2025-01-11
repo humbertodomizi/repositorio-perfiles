@@ -1,6 +1,10 @@
 import { v4 as uuidv4 } from 'uuid';
 
-import { fetchAllUsers, createUser } from '../services/usersService.js';
+import {
+  fetchAllUsers,
+  fetchUserById,
+  createUser
+} from '../services/usersService.js';
 
 export const getUsers = async (req, res) => {
   try {
@@ -9,6 +13,28 @@ export const getUsers = async (req, res) => {
   } catch (error) {
     console.error('Error al obtener los usuarios:', error);
     res.status(500).json({ message: 'Error al obtener los usuarios' });
+  }
+};
+
+export const getUserById = async (req, res) => {
+  try {
+    const { uuid } = req.params;
+
+    // if (!uuid) {
+    //   res.status(400).json({ message: 'Ingrese un ID' });
+    //   return;
+    // }
+
+    if (uuid && typeof uuid !== 'string') {
+      res.status(400).json({ message: 'Ingrese un formato de ID válido' });
+      return;
+    }
+
+    const user = await fetchUserById(uuid);
+    res.status(200).json(user);
+  } catch (error) {
+    console.error(`Error al obtener los usuarios:`, error);
+    res.status(500).json({ message: `Error al obtener los usuarios` });
   }
 };
 

@@ -10,6 +10,16 @@ export const fetchAllUsers = async () => {
   }
 };
 
+export const fetchUserById = async (uuid) => {
+  try {
+    const user = await User.findOne({ where: { uuid } });
+    return user;
+  } catch (error) {
+    console.error('Error en el servicio de usuarios:', error);
+    throw error;
+  }
+};
+
 export const createUser = async (userData) => {
   try {
     const user = await User.create(userData);
