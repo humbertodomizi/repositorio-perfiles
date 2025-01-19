@@ -2,39 +2,37 @@ import { v4 as uuidv4 } from 'uuid';
 
 import {
   fetchAllUsers,
-  fetchUserById,
+  fetchUserByUUID,
+  deleteUserByUUID,
+  updateUserByUUID,
   createUser
 } from '../services/usersService.js';
+
+import { handleErrors } from '../helpers/handleErrors.js';
 
 export const getUsers = async (req, res) => {
   try {
     const users = await fetchAllUsers();
     res.status(200).json(users);
   } catch (error) {
-    console.error('Error al obtener los usuarios:', error);
-    res.status(500).json({ message: 'Error al obtener los usuarios' });
+    handleErrors(res, error);
   }
 };
 
-export const getUserById = async (req, res) => {
+export const getUserByUUID = async (req, res) => {
   try {
     const { uuid } = req.params;
 
-    // if (!uuid) {
-    //   res.status(400).json({ message: 'Ingrese un ID' });
-    //   return;
-    // }
+    const user = await fetchUserByUUID(uuid);
 
-    if (uuid && typeof uuid !== 'string') {
-      res.status(400).json({ message: 'Ingrese un formato de ID válido' });
+    if (!user) {
+      res.status(404).json({ message: 'Usuario no encontrado' });
       return;
     }
 
-    const user = await fetchUserById(uuid);
     res.status(200).json(user);
   } catch (error) {
-    console.error(`Error al obtener los usuarios:`, error);
-    res.status(500).json({ message: `Error al obtener los usuarios` });
+    handleErrors(res, error);
   }
 };
 
@@ -73,9 +71,65 @@ export const newUser = async (req, res) => {
 
     res.status(201).json(userPlain);
   } catch (error) {
-    console.error('Error al crear el usuario:', error.errors[0].message);
-    res.status(500).json({
-      message: `Error al crear el usuario: ${error.errors[0].message}`
-    });
+    handleErrors(res, error);
+  }
+};
+
+export const updateUser = async (req, res) => {
+  try {
+    const { uuid } = req.params;
+    const { name, lastName, email, password, roleId } = req.body;
+
+    if (
+      (name && typeof name !== 'string') ||
+      (lastName && typeof lastName !== 'string') ||
+      (email && typeof email !== 'string') ||
+      (password && typeof password !== 'string') ||
+      (roleId && typeof roleId !== 'number')
+    ) {
+      const invalidFields = [];
+
+      if (name && typeof name !== 'string') invalidFields.push('name');
+      if (lastName && typeof lastName !== 'string')
+        invalidFields.push('lastName');
+      if (email && typeof email !== 'string') invalidFields.push('email');
+      if (password && typeof password !== 'string')
+        invalidFields.push('password');
+      if (roleId && typeof roleId !== 'number') invalidFields.push('roleId');
+
+      return res.status(400).json({
+        message: `Hay campos con formatos incorrectos: ${invalidFields}`
+      });
+    }
+
+    const payload = { ...req.body };
+
+    const userUpdated = await updateUserByUUID(uuid, payload);
+
+    if (!userUpdated) {
+      res.status(404).json({ message: 'Usuario no encontrado' });
+      return;
+    }
+
+    res.status(200).json({ message: 'Usuario actualizado', user: userUpdated });
+  } catch (error) {
+    handleErrors(res, error);
+  }
+};
+
+export const deleteUser = async (req, res) => {
+  try {
+    const { uuid } = req.params;
+
+    const userDeleted = await deleteUserByUUID(uuid);
+
+    if (!userDeleted) {
+      res.status(404).json({ message: 'Usuario no encontrado' });
+      return;
+    }
+
+    res.status(200).json({ message: 'Usuario eliminado' });
+  } catch (error) {
+    handleErrors(res, error);
   }
 };

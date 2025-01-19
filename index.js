@@ -13,7 +13,7 @@ app.use(express.json());
 app.use('/api/v1', usersRoutes);
 
 sequelize
-  .sync({ force: true })
+  .sync()
   .then(() => {
     console.log('Conexión a la base de datos exitosa');
   })
