@@ -63,4 +63,10 @@ const deletePermision = async (id) => {
   }
 };
 
-export default PermissionService;
+export default {
+  fetchAllPermissions,
+  fetchPermissionById,
+  createPermission,
+  updatePermission,
+  deletePermision
+};
