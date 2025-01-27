@@ -54,6 +54,10 @@ const updatePermission = async (req, res) => {
     const { id } = req.params;
     const { action } = req.body;
 
+    // if (!id) {
+    //   return res.status(400).json({ message: 'Inserte el ID del permiso' });
+    // }
+
     if (action && typeof action !== 'string') {
       const invalidFields = [];
 

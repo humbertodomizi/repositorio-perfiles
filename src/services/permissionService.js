@@ -32,15 +32,15 @@ const createPermission = async (id, userData) => {
 
 const updatePermission = async (userData) => {
   try {
-    const updatedPermision = await Permission.findOne({ where: { id } });
+    const updatedPermission = await Permission.findOne({ where: { id } });
 
     if (!updatedPermision) {
       return null;
     }
 
-    await updatedPermision.update(userData);
+    await updatedPermission.update(id, userData);
 
-    return updatePermission;
+    return updatedPermission;
   } catch (error) {
     console.error('Error en el servicio actualizar permiso', error);
     throw error;
