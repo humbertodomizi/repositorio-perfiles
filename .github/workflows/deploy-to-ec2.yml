@@ -33,9 +33,10 @@ jobs:
             sudo apt-get update -y
 
             # Instalar Node.js y PM2 si no están instalados
-            curl -fsSL https://deb.nodesource.com/setup_18.x | sudo -E bash -
+            curl -fsSL https://deb.nodesource.com/setup_22.x | sudo -E bash -
             sudo apt-get install -y nodejs
             sudo npm install -g pm2
+            nvm 
 
             # Instalar dependencias de la app
             cd ${{ secrets.TARGET_DIR }}
