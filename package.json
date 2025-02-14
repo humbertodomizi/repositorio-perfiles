@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "node --watch index.js",
+    "start": "NODE_ENV=production node index.js",
     "lint": "standard --fix"
   },
   "keywords": [],
