@@ -43,7 +43,7 @@ jobs:
 
             # Reiniciar la aplicación con PM2
             pm2 stop all || true
-            pm2 start index.js --name repositorio-perfiles
+            pm2 start index.js --name repositorio-perfiles --interpreter `which node`
             pm2 save
             pm2 startup systemd
 
