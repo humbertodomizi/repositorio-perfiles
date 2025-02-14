@@ -1,5 +1,5 @@
-import { DataTypes } from 'sequelize';
-import sequelize from '../db/mysqlConnection.js';
+import { DataTypes } from 'sequelize'
+import sequelize from '../database/mySQL.js'
 
 const Role = sequelize.define('Role', {
   id: {
@@ -11,6 +11,6 @@ const Role = sequelize.define('Role', {
     type: DataTypes.STRING,
     allowNull: false
   }
-});
+})
 
-export default Role;
+export default Role

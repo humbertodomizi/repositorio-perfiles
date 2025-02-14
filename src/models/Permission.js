@@ -1,5 +1,5 @@
-import { DataTypes } from 'sequelize';
-import sequelize from '../db/mysqlConnection.js';
+import { DataTypes } from 'sequelize'
+import sequelize from '../database/mySQL.js'
 
 const Permission = sequelize.define('Permission', {
   id: {
@@ -11,6 +11,6 @@ const Permission = sequelize.define('Permission', {
     type: DataTypes.STRING,
     allowNull: false
   }
-});
+})
 
-export default Permission;
+export default Permission

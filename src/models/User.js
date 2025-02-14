@@ -1,5 +1,5 @@
-import { DataTypes } from 'sequelize';
-import sequelize from '../db/mysqlConnection.js';
+import { DataTypes } from 'sequelize'
+import sequelize from '../database/mySQL.js'
 
 const User = sequelize.define('User', {
   id: {
@@ -36,6 +36,6 @@ const User = sequelize.define('User', {
     type: DataTypes.INTEGER,
     allowNull: false
   }
-});
+})
 
-export default User;
+export default User

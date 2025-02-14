@@ -1,28 +1,29 @@
-import express from 'express';
+import express from 'express'
 
-import usersRoutes from './src/v1/routes/usersRoutes.js';
-import { permissionRoutes } from './src/v1/routes/permissionRoutes.js';
+import { apiV1Router } from './src/routes/index.js'
 
-import sequelize from './src/database/db/mysqlConnection.js';
+import sequelize from './src/database/mySQL.js'
+import { corsMiddleware } from './src/middlewares/cors.js'
 
-process.loadEnvFile();
-const PORT = process.env.PORT || 3000;
+process.loadEnvFile()
 
-const app = express();
-app.use(express.json());
+const app = express()
+app.use(express.json())
+app.use(corsMiddleware())
 
-app.use('/api/v1', usersRoutes);
-app.use('api/v1', permissionRoutes);
+const PORT = process.env.PORT || 5000
+
+app.use('/api/v1', apiV1Router)
 
 sequelize
   .sync()
   .then(() => {
-    console.log('Conexión a la base de datos exitosa');
+    console.log('Conexión a la base de datos exitosa')
   })
   .catch((err) => {
-    console.error('No se pudo conectar a la base de datos:', err);
-  });
+    console.error('No se pudo conectar a la base de datos:', err)
+  })
 
 app.listen(PORT, () => {
-  console.log(`Server listening on http://localhost:${PORT}`);
-});
+  console.log(`Server listening on http://localhost:${PORT}`)
+})
