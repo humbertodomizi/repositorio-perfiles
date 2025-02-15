@@ -1,8 +1,9 @@
 import express from 'express'
+import sequelize from './src/database/mySQL.js'
 
 import { apiV1Router } from './src/routes/index.js'
 
-import sequelize from './src/database/mySQL.js'
+import { errorHandler } from './src/middlewares/errorHandler.js'
 import { corsMiddleware } from './src/middlewares/cors.js'
 
 process.loadEnvFile()
@@ -14,6 +15,8 @@ app.use(corsMiddleware())
 const PORT = process.env.PORT || 5000
 
 app.use('/api/v1', apiV1Router)
+
+app.use(errorHandler)
 
 sequelize
   .sync()

@@ -1,34 +1,25 @@
 import { v4 as uuidv4 } from 'uuid'
 
-import { handleErrors } from '../helpers/handleErrors.js'
 import User from '../models/User.js'
 import { userSchema } from '../validations/users.js'
 
 export class UsersController {
   static getAll = async (req, res) => {
-    try {
-      const users = await User.findAll()
-      res.status(200).json(users)
-    } catch (error) {
-      handleErrors(res, error)
-    }
+    const users = await User.findAll()
+    res.status(200).json(users)
   }
 
   static getByUUID = async (req, res) => {
-    try {
-      const { uuid } = req.params
+    const { uuid } = req.params
 
-      const user = await User.findOne({ where: { uuid } })
+    const user = await User.findOne({ where: { uuid } })
 
-      if (!user) {
-        res.status(404).json({ message: 'Usuario no encontrado' })
-        return
-      }
-
-      res.status(200).json(user)
-    } catch (error) {
-      handleErrors(res, error)
+    if (!user) {
+      res.status(404).json({ message: 'Usuario no encontrado' })
+      return
     }
+
+    res.status(200).json(user)
   }
 
   static create = async (req, res) => {
@@ -39,20 +30,16 @@ export class UsersController {
       return
     }
 
-    try {
-      const user = await User.create({ ...validateResult.data, uuid: uuidv4() })
-      res.status(201).json({
-        message: 'Usuario creado',
-        user: {
-          uuid: user.uuid,
-          name: user.name,
-          lastName: user.lastName,
-          email: user.email
-        }
-      })
-    } catch (error) {
-      handleErrors(res, error)
-    }
+    const user = await User.create({ ...validateResult.data, uuid: uuidv4() })
+    res.status(201).json({
+      message: 'Usuario creado',
+      user: {
+        uuid: user.uuid,
+        name: user.name,
+        lastName: user.lastName,
+        email: user.email
+      }
+    })
   }
 
   static update = async (req, res) => {
@@ -64,44 +51,35 @@ export class UsersController {
       res.status(400).json({ message: 'Hay campos con formatos incorrectos', errors: validateResult.error.errors })
       return
     }
+    const user = await User.findOne({ where: { uuid } })
 
-    try {
-      const user = await User.findOne({ where: { uuid } })
-
-      if (!user) {
-        res.status(404).json({ message: 'Usuario no encontrado' })
-        return
-      }
-
-      const userUpdated = await user.update(validateResult.data)
-
-      res.status(200).json({ message: 'Usuario actualizado', user: userUpdated })
-    } catch (error) {
-      handleErrors(res, error)
+    if (!user) {
+      res.status(404).json({ message: 'Usuario no encontrado' })
+      return
     }
+
+    const userUpdated = await user.update(validateResult.data)
+
+    res.status(200).json({ message: 'Usuario actualizado', user: userUpdated })
   }
 
   static delete = async (req, res) => {
-    try {
-      const { uuid } = req.params
+    const { uuid } = req.params
 
-      const user = await User.findOne({ where: { uuid } })
+    const user = await User.findOne({ where: { uuid } })
 
-      if (!user) {
-        res.status(404).json({ message: 'Usuario no encontrado' })
-        return
-      }
-
-      const userDeleted = await user.destroy()
-
-      if (!userDeleted) {
-        res.status(404).json({ message: 'Usuario no encontrado' })
-        return
-      }
-
-      res.status(200).json({ message: 'Usuario eliminado' })
-    } catch (error) {
-      handleErrors(res, error)
+    if (!user) {
+      res.status(404).json({ message: 'Usuario no encontrado' })
+      return
     }
+
+    const userDeleted = await user.destroy()
+
+    if (!userDeleted) {
+      res.status(404).json({ message: 'Usuario no encontrado' })
+      return
+    }
+
+    res.status(200).json({ message: 'Usuario eliminado' })
   }
 }
