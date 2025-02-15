@@ -15,8 +15,7 @@ export class UsersController {
     const user = await User.findOne({ where: { uuid } })
 
     if (!user) {
-      res.status(404).json({ message: 'Usuario no encontrado' })
-      return
+      return res.status(404).json({ message: 'Usuario no encontrado' })
     }
 
     res.status(200).json(user)
@@ -26,11 +25,11 @@ export class UsersController {
     const validateResult = userSchema.safeParse(req.body)
 
     if (!validateResult.success) {
-      res.status(400).json({ message: 'Hay campos con formatos incorrectos', errors: validateResult.error.errors })
-      return
+      return res.status(400).json({ message: 'Hay campos con formatos incorrectos', errors: validateResult.error.errors })
     }
 
     const user = await User.create({ ...validateResult.data, uuid: uuidv4() })
+
     res.status(201).json({
       message: 'Usuario creado',
       user: {
@@ -48,14 +47,12 @@ export class UsersController {
     const validateResult = userSchema.partial().safeParse(req.body)
 
     if (!validateResult.success) {
-      res.status(400).json({ message: 'Hay campos con formatos incorrectos', errors: validateResult.error.errors })
-      return
+      return res.status(400).json({ message: 'Hay campos con formatos incorrectos', errors: validateResult.error.errors })
     }
     const user = await User.findOne({ where: { uuid } })
 
     if (!user) {
-      res.status(404).json({ message: 'Usuario no encontrado' })
-      return
+      return res.status(404).json({ message: 'Usuario no encontrado' })
     }
 
     const userUpdated = await user.update(validateResult.data)
@@ -69,16 +66,10 @@ export class UsersController {
     const user = await User.findOne({ where: { uuid } })
 
     if (!user) {
-      res.status(404).json({ message: 'Usuario no encontrado' })
-      return
+      return res.status(404).json({ message: 'Usuario no encontrado' })
     }
 
-    const userDeleted = await user.destroy()
-
-    if (!userDeleted) {
-      res.status(404).json({ message: 'Usuario no encontrado' })
-      return
-    }
+    await user.destroy()
 
     res.status(200).json({ message: 'Usuario eliminado' })
   }

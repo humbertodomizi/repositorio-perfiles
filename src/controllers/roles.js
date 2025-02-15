@@ -12,7 +12,7 @@ export class RolesController {
     const role = await Role.findOne({ where: { id } })
 
     if (!role) {
-      res.status(404).json({ message: 'Rol no encontrado' })
+      return res.status(404).json({ message: 'Rol no encontrado' })
     }
 
     res.status(200).json(role)
@@ -26,6 +26,7 @@ export class RolesController {
     }
 
     const role = await Role.create(validateResult.data)
+
     res.status(201).json({
       message: 'Rol creado',
       role: {

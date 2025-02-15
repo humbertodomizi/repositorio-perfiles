@@ -12,7 +12,7 @@ export class PermissionsController {
     const permission = await Permission.findOne({ where: { id } })
 
     if (!permission) {
-      res.status(404).json({ message: 'Permiso no encontrado' })
+      return res.status(404).json({ message: 'Permiso no encontrado' })
     }
 
     res.status(200).json(permission)
@@ -26,6 +26,7 @@ export class PermissionsController {
     }
 
     const permission = await Permission.create(validateResult.data)
+
     res.status(201).json({
       message: 'Permiso creado',
       permission: {
