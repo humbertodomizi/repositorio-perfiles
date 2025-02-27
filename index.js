@@ -1,6 +1,6 @@
 import express from "express";
 
-import { apiV1Router } from "./src/routes/v1/index.js";
+import { router } from "./src/routes/v1/index.js";
 
 import { errorHandler } from "./src/middlewares/errorHandler.js";
 import { corsMiddleware } from "./src/middlewares/cors.js";
@@ -17,9 +17,12 @@ await syncDB();
 
 const PORT = process.env.PORT || 5000;
 
-app.use('/api/v1', apiV1Router);
 
+app.use('/api/v1', router);
 
+app.use((req, res, next) => {
+  res.status(404).json({ message: `Route '${ req.originalUrl }' not found` });
+});
 
 app.use(errorHandler);
 

@@ -4,11 +4,15 @@ import { permissionsRouter } from './permissions.js'
 import { rolesRouter } from './roles.js'
 import { s3Router } from './s3.js'
 
-const apiV1Router = Router()
+const router = Router()
 
-apiV1Router.use('/users', usersRouter)
-apiV1Router.use('/permissions', permissionsRouter)
-apiV1Router.use('/roles', rolesRouter)
-apiV1Router.use('/s3', s3Router)
+router.get('/', (req, res) => {
+  res.json({ message: 'API v1' })
+})
 
-export { apiV1Router }
+router.use('/users', usersRouter)
+router.use('/permissions', permissionsRouter)
+router.use('/roles', rolesRouter)
+router.use('/s3', s3Router)
+
+export { router }
