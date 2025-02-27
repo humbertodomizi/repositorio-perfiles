@@ -1,6 +1,6 @@
 import express from 'express'
 
-import { apiV1Router } from './src/routes/index.js'
+import { apiV1Router } from './src/routes/v1/index.js'
 
 import { errorHandler } from './src/middlewares/errorHandler.js'
 import { corsMiddleware } from './src/middlewares/cors.js'

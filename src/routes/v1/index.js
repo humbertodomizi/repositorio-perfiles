@@ -1,7 +1,7 @@
 import { Router } from 'express'
-import { usersRouter } from './v1/users.js'
-import { permissionsRouter } from './v1/permissions.js'
-import { rolesRouter } from './v1/roles.js'
+import { usersRouter } from './users.js'
+import { permissionsRouter } from './permissions.js'
+import { rolesRouter } from './roles.js'
 
 const apiV1Router = Router()
 
