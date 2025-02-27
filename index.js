@@ -17,7 +17,6 @@ await syncDB();
 
 const PORT = process.env.PORT || 5000;
 
-
 app.use('/api/v1', router);
 
 app.use((req, res, next) => {
